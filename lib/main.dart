@@ -11,7 +11,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Bluetoth Flutter',
+      title: 'Bluetooth Flutter',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
@@ -32,9 +32,11 @@ class _MyHomePageState extends State<MyHomePage> {
 
   _androidComunication() async {
     try {
-      bluetoothState = await platform.invokeMethod('isBluetoothSuported');
-      setState(() async {
-
+      bluetoothState =
+          await platform.invokeMethod('isBluetoothSuported').then((value) {
+        setState(() {
+          bluetoothState = value;
+        });
       });
     } catch (e) {
       return Exception('Não foi possível se conectar');
