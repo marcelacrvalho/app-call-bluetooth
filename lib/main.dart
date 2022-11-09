@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 void main() {
   runApp(const MyApp());
@@ -7,7 +8,6 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -27,17 +27,31 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  String bluetoothState = 'ligado';
+  static const platform = MethodChannel('bluetooth.channel.com/status');
+
+  _androidComunication() async {
+    try {
+      bluetoothState = await platform.invokeMethod('isBluetoothSuported');
+      setState(() async {
+
+      });
+    } catch (e) {
+      return Exception('Não foi possível se conectar');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Bluetooth Ligado'),
+        title: Text('Bluetooth $bluetoothState'),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () => _androidComunication(),
         tooltip: 'Increment',
         child: const Icon(Icons.bluetooth),
-      ), // This trailing comma m
+      ),
       body: Center(
         child: Column(),
       ),
